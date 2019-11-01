@@ -1,0 +1,22 @@
+{
+  "name": "bamazon-node-cli-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DangerDan88/bamazon-node-cli-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DangerDan88/bamazon-node-cli-app/issues"
+  },
+  "homepage": "https://github.com/DangerDan88/bamazon-node-cli-app#readme",
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}
