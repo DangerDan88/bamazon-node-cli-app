@@ -16,10 +16,26 @@ connection.connect(function(err) {
   if (err) throw err;
   // console.log("connected as id " + connection.threadId);
   startDisplay();
+  displayItemsChosen();
 });
 
-function displayItems(){
-  connection.query("SELECT * products")
+function displayItemsChosen() {
+  inquirer
+    .prompt({
+      name: "items",
+      message: "What is the item_id of product you would like to search?"
+    })
+
+    .then(function(answer) {
+      connection.query("SELECT * FROM products WHERE item_id = ?",[answer.items] ,function(err,response) {
+        for (var i = 0; i < response.length; i++) {
+          console.log(response[i].product_name);
+          console.log("Item id is  "+ response[i].item_id);
+        console.log(response[i].price);
+        console.log(response[i].stock_quanity);
+        }
+      });
+    });
 }
 
 function startDisplay() {
@@ -31,17 +47,13 @@ function startDisplay() {
     })
 
     .then(function(answer) {
-  
       var query = "SELECT * FROM products";
-     // WHERE item_id = ?
+
       connection.query(query, [answer.start], function(err, response) {
-    
-       for(var i = 0; i < response.length; i++){
-       console.log(response[i].product_name);
-       console.log(response[i].item_id);
-       }
-       
+        for (var i = 0; i < response.length; i++) {
+         // console.log(response[i].product_name);
+         // console.log(response[i].item_id);
+        }
       });
-      // }
     });
 }
