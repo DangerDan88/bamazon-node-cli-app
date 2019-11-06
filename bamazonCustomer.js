@@ -14,21 +14,34 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId);
-  startQuestion();
+  // console.log("connected as id " + connection.threadId);
+  startDisplay();
 });
 
-function startQuestion() {
+function displayItems(){
+  connection.query("SELECT * products")
+}
+
+function startDisplay() {
   inquirer
     .prompt({
       name: "start",
-      message: "What is the id of the product you would like to buy?"
+      message: "Are you ready to check out this awesome CLI app?",
+      type: "Boolean"
     })
 
     .then(function(answer) {
-      var query = "SELECT products, item_id, FROM bamazon WHERE ?";
-      connection.query(query, function(err, res) {
-        console.log(res);
+  
+      var query = "SELECT * FROM products";
+     // WHERE item_id = ?
+      connection.query(query, [answer.start], function(err, response) {
+    
+       for(var i = 0; i < response.length; i++){
+       console.log(response[i].product_name);
+       console.log(response[i].item_id);
+       }
+       
       });
+      // }
     });
 }
