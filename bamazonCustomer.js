@@ -15,52 +15,48 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   // console.log("connected as id " + connection.threadId);
-  startQuestion();
-  // displayItemsChosen();
+
 });
 
-function startQuestion() {
-  inquirer
-    .prompt({
-      name: "start",
-      message: "Are you ready to check out this awesome CLI app?"
-    })
-
-    .then(function(answer) {
-      startDisplay(answer);
-    });
-}
-
-function displayItemsChosen() {
-  inquirer
-    .prompt({
-      name: "items",
-      message: "What is the item_id of product you would like to search?"
-    })
-
-    .then(function(answer) {
-      connection.query(
-        "SELECT * FROM products WHERE item_id = ?",
-        [answer.items],
-        function(err, response) {
-          for (var i = 0; i < response.length; i++) {
-            console.log(response[i].product_name);
-            console.log("Item id is  " + response[i].item_id);
-            console.log("Price of item  " + "$" + response[i].price);
-            console.log("Stock quanity  " + response[i].stock_quanity);
-          }
-        }
-      );
-    });
-}
-
-function startDisplay(answer) {
-  var query = "SELECT * FROM products";
-  connection.query(query, [answer.start], function(err, response) {
-    console.log("Here are the items available.!");
+function homePage() {
+  connection.query("SELECT * FROM products", function(err, response) {
+    if (err) throw err;
+    console.log("-----------------------------");
+    console.log("      Welcome To Bamazon    ");
+    console.log("-----------------------------");
+    console.log("");
+    console.log("Find below our Products List");
     for (var i = 0; i < response.length; i++) {
       console.log(response[i].product_name);
       console.log(response[i].item_id);
     }
   });
+  shopping();
+};
+
+function shopping() {
+  inquirer.prompt(
+    {
+      name: "productBuy",
+      type: "input",
+      message: "What is the item id of the product you would like to purchase?"
+    }
+  ).then(function(answer1) {
+    var selection = answer1.productBuy;
+    connection.query(
+      "SELECT * FROM products WHERE item_id=?",
+      selection,
+      function(err, response) {
+        if (err) throw err;
+        if (response.length === 0) {
+          console.log(
+            "That Product doesn't exist, Please enter a Product Id from the list above"
+          );
+
+          shopping();
+        } 
+      }
+    );
+  });
 }
+homePage();
