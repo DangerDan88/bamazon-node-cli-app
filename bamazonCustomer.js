@@ -86,7 +86,7 @@ var shopping = function() {
                       console.log("Your Order has been Processed");
                       console.log("Thank you for Shopping with us...!");
                       console.log("");
-                       console.log(resUpdate);
+                    //   console.log(resUpdate);
                       connection.end();
                     }
                   );
